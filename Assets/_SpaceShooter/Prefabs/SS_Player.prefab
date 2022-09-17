@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6757021348131372254}
   m_Layer: 0
   m_Name: SS_Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,7 +104,7 @@ MonoBehaviour:
   minY: -4
   maxY: 4
   attackTimer: 0.4
-  playerBullet: {fileID: 0}
+  playerBullet: {fileID: 6642927029193506221, guid: 03d3cd951d5e51743adbc1729decb8f3, type: 3}
   attackPoint: {fileID: 6757021348870625747}
 --- !u!50 &6757021348131372253
 Rigidbody2D:

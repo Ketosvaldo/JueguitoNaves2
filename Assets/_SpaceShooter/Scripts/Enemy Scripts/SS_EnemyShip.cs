@@ -11,6 +11,7 @@ public class SS_EnemyShip : MonoBehaviour
     public bool canShoot;
     public bool canRotate;
     public bool canMove = true;
+    public float attackTimer;
     [Header("Limite de Enemigo")]
     public float boundX = -10;
     [Header("Asignaciones")]
@@ -19,7 +20,7 @@ public class SS_EnemyShip : MonoBehaviour
     public bool destroy = false;
     Animator anim;
     AudioSource explosionSound;
-
+    float counter;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -38,11 +39,22 @@ public class SS_EnemyShip : MonoBehaviour
 
     private void Update()
     {
+        DestroyEnemy();
         MoveEnemy();
         RotateEnemy();
+        if(counter >= attackTimer)
+            StartShooting();
+        counter += Time.deltaTime;
+    }
+
+    void DestroyEnemy()
+    {
         if (destroy)
         {
-            anim.Play("Anim_SS_Enemy_Destroy") || anim.Play("Anim_SS_Asteroid_Destroy");
+            anim.Play("Anim_SS_Enemy_Destroy");
+            explosionSound.enabled = true;
+            canShoot = false;
+            Destroy(gameObject, 1f);
         }
     }
 
@@ -70,10 +82,10 @@ public class SS_EnemyShip : MonoBehaviour
 
     void StartShooting()
     {
-        GameObject _bullet = Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
         if (canShoot)
         {
-            Invoke("StartShooting", Random.Range(1, 3));
+            Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
+            counter = 0;
         }
     }
 }
