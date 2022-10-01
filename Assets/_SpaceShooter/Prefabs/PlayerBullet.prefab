@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 6
   deactivateTimer: 3
+  PlayerBullet: 1
 --- !u!82 &5742521937369501996
 AudioSource:
   m_ObjectHideFlags: 0

@@ -15,9 +15,8 @@ public class SS_EnemyShip : MonoBehaviour
     [Header("Limite de Enemigo")]
     public float boundX = -10;
     [Header("Asignaciones")]
-    public Transform attackPoint;
+    public Transform[] attackPoint;
     public GameObject bulletPrefab;
-    public bool destroy = false;
     Animator anim;
     AudioSource explosionSound;
     float counter;
@@ -39,7 +38,6 @@ public class SS_EnemyShip : MonoBehaviour
 
     private void Update()
     {
-        DestroyEnemy();
         MoveEnemy();
         RotateEnemy();
         if(counter >= attackTimer)
@@ -47,15 +45,16 @@ public class SS_EnemyShip : MonoBehaviour
         counter += Time.deltaTime;
     }
 
-    void DestroyEnemy()
+    public void DestroyEnemy()
     {
-        if (destroy)
-        {
-            anim.Play("Anim_SS_Enemy_Destroy");
-            explosionSound.enabled = true;
-            canShoot = false;
-            Destroy(gameObject, 1f);
-        }
+        anim.Play("Anim_SS_Enemy_Destroy");
+        explosionSound.enabled = true;
+        canShoot = false;
+        if (GetComponent<BoxCollider2D>())
+            GetComponent<BoxCollider2D>().enabled = false;
+        else
+            GetComponent<CircleCollider2D>().enabled = false;
+        Destroy(gameObject, 1f);
     }
 
     void MoveEnemy()
@@ -84,7 +83,9 @@ public class SS_EnemyShip : MonoBehaviour
     {
         if (canShoot)
         {
-            Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
+            Instantiate(bulletPrefab, attackPoint[0].position, Quaternion.identity);
+            if (attackPoint[1])
+                Instantiate(bulletPrefab, attackPoint[1].position, Quaternion.identity);
             counter = 0;
         }
     }

@@ -4,6 +4,7 @@ public class SS_Bullet : MonoBehaviour
 {
     public float Speed = 6f;
     public float deactivateTimer = 3f;
+    public bool PlayerBullet;
     SS_EnemyShip enemie;
     SS_Score score;
     private void Start()
@@ -28,16 +29,18 @@ public class SS_Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if (collision.tag == "Enemy" && PlayerBullet)
         {
             enemie = collision.gameObject.GetComponent<SS_EnemyShip>();
             switch (collision.gameObject.name)
             {
-                case "SS_Asteroid1(Clone)": score.score += 100; break;
-                case "SS_Asteroid2(Clone)": score.score += 200; break;
-                case "SS_Enemy(Clone)": score.score += 300; break;
+                case "SS_Asteroid1(Clone)": score.IncreaseScore(100); enemie.DestroyEnemy(); break;
+                case "SS_Asteroid2(Clone)": score.IncreaseScore(200); enemie.DestroyEnemy(); break;
+                case "SS_Asteroid3(Clone)": score.IncreaseScore(500); enemie.DestroyEnemy(); break;
+                case "SS_Enemy(Clone)": score.IncreaseScore(300); enemie.DestroyEnemy(); break;
+                case "SS_Enemy 1(Clone)": score.IncreaseScore(600); enemie.DestroyEnemy(); break;
+                default: Destroy(collision.gameObject); break;
             }
-            enemie.destroy = true;
             Destroy(gameObject);
         }
     }

@@ -120,7 +120,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.028028488, y: 0.2697746}
@@ -151,7 +151,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -176,9 +176,10 @@ MonoBehaviour:
   canMove: 1
   attackTimer: 2
   boundX: -10
-  attackPoint: {fileID: 2687060049714447420}
+  attackPoint:
+  - {fileID: 2687060049714447420}
+  - {fileID: 0}
   bulletPrefab: {fileID: 6642927029193506221, guid: 817daf34e3d69224ca3dc2a211844b9c, type: 3}
-  destroy: 0
 --- !u!82 &1095095626193122654
 AudioSource:
   m_ObjectHideFlags: 0

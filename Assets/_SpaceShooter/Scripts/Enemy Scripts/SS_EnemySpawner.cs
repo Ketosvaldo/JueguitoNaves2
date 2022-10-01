@@ -10,7 +10,7 @@ public class SS_EnemySpawner : MonoBehaviour
 
     [Header("Asignación de Enemigos")]
     public GameObject[] asteroidPrefabs;
-    public GameObject enemyShipPrefab;
+    public GameObject[] enemyShipPrefab;
 
     [Header("Timer de Generación")]
     public float timer = 2;
@@ -28,7 +28,7 @@ public class SS_EnemySpawner : MonoBehaviour
         if(Random.Range(0,2) > 0)
             Instantiate(asteroidPrefabs[Random.Range(0, asteroidPrefabs.Length)], _temp, Quaternion.identity);
         else
-            Instantiate(enemyShipPrefab, _temp, Quaternion.Euler(0, 0, 90));
+            Instantiate(enemyShipPrefab[Random.Range(0, enemyShipPrefab.Length)], _temp, Quaternion.Euler(0, 0, 90));
         Invoke("SpawnEnemies", timer);
     }
 }
