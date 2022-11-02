@@ -3,85 +3,90 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ER_GameplayController : MonoBehaviour
-{//START CLASS ER_GameplayController
-    //Variables Publicas
-    public static ER_GameplayController instance; //Variable Singleton
+{
+    public static ER_GameplayController instance;
 
     [Header("Arreglos de Objetos")]
-    public GameObject[] obstaclePrefabs; //Arreglo de GOs para obstaculos
-    public GameObject[] zombiePrefabs; //Arreglo de GOs para zombies
+    public GameObject[] obstaclePrefabs;
+    public GameObject[] zombiePrefabs;
 
     [Header("Carriles de Objetos")]
-    public Transform[] lanes; //Arreglo de carriles para generar objetos
+    public Transform[] lanes;
 
     [Header("Tiempos para generar Obstaculos")]
-    public float minObstacleDelay = 10f; //Tiempo minimo para generar obstaculos
-    public float maxObstacleDelay = 40f; //Tiempo maximo para generar obstaculos
+    public float minObstacleDelay = 10f;
+    public float maxObstacleDelay = 40f;
 
     //Variables Privadas
-    private float halfGroundSize; //Mitad de longitud de terreno
-
-    private ER_BaseController baseController; //REF SCRIPT ER_BaseController
+    float halfGroundSize;
+    ER_BaseController baseController;
 
     private void Awake()
-    {//START Awake
-        //Llamada al metodo que crea el Singleton
+    {
         MakeSingleton();
-    }//END Awake
+    }
 
     private void Start()
-    {//START Start
-        //Inicializar referencias
-        //Valor a la variable halfGroundSize por medio de una busqueda de una variable dentro del script ER_GroundBlock
+    {
         halfGroundSize = GameObject.Find("GroundBlock Main").GetComponent<ER_GroundBlock>().halfLength;
-
-        //Valor de la referencia baseController
-        //Busqueda en escena de un objeto con el tag Player para encontrar el componente ER_BaseController
         baseController = GameObject.FindGameObjectWithTag("Player").GetComponent<ER_BaseController>();
-
-        //Iniciar la corrutina para generar obstaculos
         StartCoroutine(GenerateObstaclesCo());
-    }//END Start
+    }
 
-    //Metodo para crear singleton
     void MakeSingleton() 
-    {//START MakeSingleton
-        //Checar si no existe una referencia de la instancia
+    {
         if(instance == null) 
-        {//START IF
-            //Si es el caso, esta clase se vuelve la instancia
             instance = this;
-        }//END IF
-        //Checar si existe una instancia 
         else if(instance != null) 
-        {//START ELSE IF
-            //Si es el caso, destruir el objeto que tenga esta clase
             Destroy(gameObject);
-        }//END ELSE IF
-    }//END MakeSingleton
+    }
 
-    //Corrutina para generar obstaculos
     IEnumerator GenerateObstaclesCo()
-    {//START GenerateObstaclesCo
-        //Temporizador local aleatorio basado en la velocidad del jugador
-        float _timer = Random.Range(minObstacleDelay, maxObstacleDelay) / baseController.speed.z;
-
-        //Pausa que emplea el temporizador local
-        //Esta linea completa la corrutina
-        yield return new WaitForSeconds(_timer);
-
-        //------------GENERACION DE OBSTACULOS--------------------
-        //Llamar a la funcion para crear obstaculos
-        //VUELVE AQUI!
-
-        //Iniciar la corrutina para generar obstaculos
-        //Creacion continua de obstaculos despues de iniciar el juego
+    {
+        float timer = Random.Range(minObstacleDelay, maxObstacleDelay) / baseController.speed.z;
+        yield return new WaitForSeconds(timer);
+        CreateObstacles(baseController.gameObject.transform.position.z + halfGroundSize);
         StartCoroutine(GenerateObstaclesCo());
-    }//END GenerateObstaclesCo
+    }
 
     //Metodo para generar obstaculos
-    void CreateObstacles(float _zPos)
-    {//START CreateObstacles
-
-    }//END CreateObstacles
-}//END CLASS ER_GameplayController
+    void CreateObstacles(float zPos)
+    {
+        int r = Random.Range(0, 10);
+        if (0 <= r && r < 7)
+        {
+            int objectLane = Random.Range(0, lanes.Length);
+            AddObstacle(new Vector3(lanes[objectLane].transform.position.x, 0f, zPos), Random.Range(0, obstaclePrefabs.Length));
+            int zombieLane = 0;
+            switch (objectLane)
+            {
+                case 0: zombieLane = Random.Range(0, 2) == 1 ? 1 : 2; break;
+                case 1: zombieLane = Random.Range(0, 2) == 1 ? 0 : 2; break;
+                case 2: zombieLane = Random.Range(0, 2) == 1 ? 1 : 0; break;
+            }
+            AddZombies(new Vector3(lanes[zombieLane].transform.position.x, 0.15f, zPos));
+        }
+    }
+    void AddObstacle(Vector3 position, int type)
+    {
+        GameObject obstacle = Instantiate(obstaclePrefabs[type], position, Quaternion.identity);
+        bool mirror = Random.Range(0, 2) == 1;
+        switch (type) 
+        {
+            case 0: obstacle.transform.rotation = Quaternion.Euler(0f, mirror ? -20 : 20, 0f); break;
+            case 1: obstacle.transform.rotation = Quaternion.Euler(0f, mirror ? 20 : -20, 0f); break;
+            case 2: obstacle.transform.rotation = Quaternion.Euler(0f, mirror ? -10 : 10, 0f); break;
+            case 3: obstacle.transform.rotation = Quaternion.Euler(0f, mirror ? -170 : 170, 0f); break;
+        }
+        obstacle.transform.position = position;
+    }
+    void AddZombies(Vector3 position)
+    {
+        int count = Random.Range(0, 3) + 1;
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 shift = new(Random.Range(-0.5f, 0.5f), 0f, Random.Range(1f, 10f) * i);
+            Instantiate(zombiePrefabs[Random.Range(0, zombiePrefabs.Length)], position + shift * i, Quaternion.identity);
+        }
+    }
+}
