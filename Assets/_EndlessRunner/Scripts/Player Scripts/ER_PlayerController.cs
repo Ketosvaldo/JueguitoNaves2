@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 public class ER_PlayerController : ER_BaseController
 {
     [Header("Propiedades de Disparo")]
@@ -7,19 +7,25 @@ public class ER_PlayerController : ER_BaseController
     public GameObject bulletPrefab;
     public ParticleSystem shootFX;
 
+    [HideInInspector]
+    public bool canShoot;
     //Variables Privadas
-    private Rigidbody rb;
+    Rigidbody rb;
+    Animator shootSliderAnim;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        shootSliderAnim = GameObject.Find("UI_SLD_FireBar").GetComponent<Animator>();
+        GameObject.Find("UI_BTN_ShootBtn").GetComponent<Button>().onClick.AddListener(ShootingControl);
+        canShoot = true;
     }
 
     private void Update()
     {
         ControlMovementWithKeyboard();
         ChangeRotation();
-        ShootingControl();
+        //ShootingControl();
     }
 
     private void FixedUpdate()
@@ -61,12 +67,24 @@ public class ER_PlayerController : ER_BaseController
     }
 
     public void ShootingControl()
-    {
+    {/*
         if (Input.GetMouseButtonDown(0)) 
         {
             GameObject bullet = Instantiate(bulletPrefab, bulletStartPoint.position, Quaternion.identity);
             bullet.GetComponent<ER_Bullet>().MoveBullet(2000f);
             shootFX.Play();
+        }
+     */
+        if(Time.timeScale != 0)
+        {
+            if (canShoot)
+            {
+                GameObject bullet = Instantiate(bulletPrefab, bulletStartPoint.position, Quaternion.identity);
+                bullet.GetComponent<ER_Bullet>().MoveBullet(2000);
+                shootFX.Play();
+                canShoot = false;
+                shootSliderAnim.Play("Anim_ShootBar_FadeIn");
+            }
         }
     }
 }
