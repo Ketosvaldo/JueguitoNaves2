@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ER_ZombieScript : MonoBehaviour
 {
+    UI_Score score;
     [Header("FX de Destrucción")]
     public GameObject bloodFXPrefab;
 
@@ -18,6 +19,7 @@ public class ER_ZombieScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         isAlive = true;
+        score = FindObjectOfType<UI_Score>();
     }
 
     private void Update()
@@ -45,6 +47,7 @@ public class ER_ZombieScript : MonoBehaviour
             Instantiate(bloodFXPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject, 3f);
             Die();
+            score.UpdateScore();
         }
     }
 }
