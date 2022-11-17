@@ -11,19 +11,41 @@ public class PlayerAnimations : MonoBehaviour
 
     void Update()
     {
-        if ((player.horizontal != 0 || player.vertical != 0) && !player.isAttacking)
+        if ((player.horizontal != 0 || player.vertical != 0) && !player.isAttacking && !player.isHitting)
             anim.Play("Walk");
         else if (player.isAttacking)
         {
-            if (player.isPunch)
+            if (player.punchCombo == 1)
             {
-                switch (player.punchCombo)
-                {
-                    case 1: anim.Play("Punch1"); break;
-                    case 2: anim.Play("Punch2"); break;
-                    case 3: anim.Play("Punch3"); break;
-                }
+                if (player.kickCombo == 1)
+                    anim.Play("Kick1");
+                else if (player.kickCombo == 2)
+                    anim.Play("Kick2");
+                else
+                    anim.Play("Punch1");
             }
+            else if (player.punchCombo == 2)
+            {
+                if (player.kickCombo == 1)
+                    anim.Play("Kick1");
+                else if (player.kickCombo == 2)
+                    anim.Play("Kick2");
+                else
+                    anim.Play("Punch2");
+            }
+            else if (player.punchCombo == 3)
+                anim.Play("Punch3");
+            else if (player.kickCombo == 1)
+                anim.Play("Kick1");
+            else if (player.kickCombo == 2)
+                anim.Play("Kick2");
+        }
+        else if (player.isHitting)
+        {
+            if (player.isDeath)
+                anim.Play("Death");
+            else
+                anim.Play("Hit1");
         }
         else
             anim.Play("Idle");
