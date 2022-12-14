@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +24,13 @@ public class PlayerHealth : MonoBehaviour
             player.isDeath = true;
             audioSource.clip = GetComponent<PlayerAudioClips>().clips[0];
             audioSource.Play();
+            StartCoroutine(Derrota());
         }
+    }
+
+    IEnumerator Derrota()
+    {
+        yield return new WaitForSeconds(3);
+        GameManager.LoseLevel();
     }
 }

@@ -24,6 +24,7 @@ public class EnemyHealth : MonoBehaviour
             GetComponent<Rigidbody>().useGravity = false;
             audioSource.clip = clip.audioSource[0];
             audioSource.Play();
+            GameManager.DecreaseCounter();
         }
     }
 }

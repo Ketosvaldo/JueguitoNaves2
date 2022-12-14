@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class EnemyCollisions : MonoBehaviour
 {
+    ParticleSpawn spawnParticle;
+    public float enemyAttack;
+    private void Start()
+    {
+        spawnParticle = GetComponent<ParticleSpawn>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -14,6 +20,7 @@ public class EnemyCollisions : MonoBehaviour
             AudioSource audioSource = transform.parent.GetComponent<AudioSource>();
             audioSource.clip = FindObjectOfType<EnemyAudioSource>().audioSource[1];
             audioSource.Play();
+            spawnParticle.InstantiateParticles((int)enemyAttack);
         }
     }
 }

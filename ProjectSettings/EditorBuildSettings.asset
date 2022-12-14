@@ -6,15 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_EndlessRunner/Scenes/ER_Playground.unity
-    guid: 4d6a8cecef34963408b2aa3e57b3b0f4
+    path: Assets/3D Beat Em Um Assets/Scene/Bitemop_Game.unity
+    guid: 5444455943a23314b9e98755da3968fc
   - enabled: 1
-    path: Assets/_SpaceShooter/Scenes/SS_Playground.unity
-    guid: 42b1b126043ba2a499c7a35ec6a33033
+    path: Assets/3D Beat Em Um Assets/Scene/Bitemop_Nivel2.unity
+    guid: bcc1f56aca127c143b670c5d0a217c93
   - enabled: 1
     path: Assets/_SpaceShooter/Scenes/SS_GameOver.unity
     guid: d303e3d1258d77746ba14cb68ece1d3f
   - enabled: 1
     path: Assets/_SpaceShooter/Scenes/SS_VictoryScreen.unity
     guid: f9714784f8e634a45a2b765e6a9e405c
+  - enabled: 1
+    path: Assets/_SpaceShooter/Scenes/SS_Playground.unity
+    guid: 42b1b126043ba2a499c7a35ec6a33033
+  - enabled: 1
+    path: Assets/_EndlessRunner/Scenes/ER_Playground.unity
+    guid: 4d6a8cecef34963408b2aa3e57b3b0f4
   m_configObjects: {}

@@ -5,11 +5,13 @@ public class PlayerCollision : MonoBehaviour
     PlayerController player;
     AudioSource audioSource;
     PlayerAudioClips clips;
+    ParticleSpawn spawnParticle;
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
         audioSource = GetComponentInParent<AudioSource>();
         clips = GetComponentInParent<PlayerAudioClips>();
+        spawnParticle = GetComponentInParent<ParticleSpawn>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,6 +23,10 @@ public class PlayerCollision : MonoBehaviour
             enemy.isAttacking = false;
             if (player.punchCombo == 3 || player.kickCombo == 2)
             {
+                if (player.punchCombo == 3)
+                    spawnParticle.InstantiateParticles(0);
+                else
+                    spawnParticle.InstantiateParticles(3);
                 float random = Random.Range(0, 10);
                 if (random > 7)
                 {
@@ -44,6 +50,12 @@ public class PlayerCollision : MonoBehaviour
             }
             enemy.gameObject.GetComponent<EnemyHealth>().DecreaseHealth();
             audioSource.Play();
+            if (player.punchCombo == 1)
+                spawnParticle.InstantiateParticles(0);
+            else if (player.punchCombo == 2)
+                spawnParticle.InstantiateParticles(1);
+            else if (player.kickCombo == 1)
+                spawnParticle.InstantiateParticles(2);
         }
     }
 }

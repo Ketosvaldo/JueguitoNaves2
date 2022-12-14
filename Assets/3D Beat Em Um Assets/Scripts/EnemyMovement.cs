@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
@@ -10,12 +9,14 @@ public class EnemyMovement : MonoBehaviour
     public float lag = 0;
     Transform player;
     Animator anim;
+    EnemyCollisions collisions;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         player = FindObjectOfType<PlayerController>().GetComponent<Transform>();
         anim = GetComponentInChildren<Animator>();
         collide = GetComponent<CapsuleCollider>();
+        collisions = FindObjectOfType<EnemyCollisions>();
     }
 
     void Update()
@@ -23,7 +24,7 @@ public class EnemyMovement : MonoBehaviour
         if (!isDeath)
         {
             Move();
-            Attack();
+            Attack(); 
             States();
         }
         else
@@ -48,6 +49,7 @@ public class EnemyMovement : MonoBehaviour
         {
             isAttacking = true;
             float random = Random.Range(0, 2);
+            collisions.enemyAttack = random;
             lag = 3;
             anim.Play("Attack" + random);
         }
