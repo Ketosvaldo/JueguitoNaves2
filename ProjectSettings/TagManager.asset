@@ -8,6 +8,11 @@ TagManager:
   - Enemy
   - winScreen
   - loseScreen
+  - Spike
+  - Coin
+  - Obstacle
+  - Bullet
+  - EndPlatform
   layers:
   - Default
   - TransparentFX

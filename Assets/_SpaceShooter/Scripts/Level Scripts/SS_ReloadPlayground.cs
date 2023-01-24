@@ -5,11 +5,11 @@ public class SS_ReloadPlayground : MonoBehaviour
 {
     void Awake()
     {
-        Invoke("LoadScene", 5);
+        Invoke("LoadScene", 3);
     }
 
     void LoadScene()
     {
-        SceneManager.LoadScene("SS_Playground");
+        SceneManager.LoadScene("GameSelector");
     }
 }
